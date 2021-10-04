@@ -165,12 +165,17 @@ mixin LayoutState implements IPlutoGridState {
       columnHeight +
       columnFilterHeight;
 
+  //TODO (fix later) minor null checks
   double get bodyLeftOffset {
-    return (showFrozenColumn! && leftFrozenColumnsWidth > 0) ? leftFrozenColumnsWidth + 1 : 0;
+    return ((showFrozenColumn ?? false) && leftFrozenColumnsWidth > 0)
+        ? leftFrozenColumnsWidth + 1
+        : 0;
   }
 
   double get bodyRightOffset {
-    return (showFrozenColumn! && rightFrozenColumnsWidth > 0) ? rightFrozenColumnsWidth + 1 : 0;
+    return ((showFrozenColumn ?? false) && rightFrozenColumnsWidth > 0)
+        ? rightFrozenColumnsWidth + 1
+        : 0;
   }
 
   double get bodyLeftScrollOffset {
