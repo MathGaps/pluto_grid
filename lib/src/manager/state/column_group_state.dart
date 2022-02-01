@@ -20,6 +20,13 @@ abstract class IColumnGroupState {
     bool notify = true,
   });
 
+  void hideAllColumnGroup();
+
+  void showOnlyColumnGroup(
+    Key columnKey, {
+    bool notify = true,
+  });
+
   // TODO: Add more methods that can be applied on a group level.
 }
 
@@ -49,6 +56,43 @@ mixin ColumnGroupState implements IPlutoGridState {
     }
 
     found.hide = flag;
+
+    refColumns!.update();
+    refColumnGroups!.update();
+
+    resetCurrentState(notify: false);
+
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
+  void hideAllColumnGroup() {
+    refColumnGroups!.originalList.forEach((element) {
+      if (element.canHide ?? false) {
+        element.hide = true;
+      }
+    });
+    refColumns!.update();
+    refColumnGroups!.update();
+    resetCurrentState(notify: false);
+  }
+
+  void showOnlyColumnGroup(
+    Key columnKey, {
+    bool notify = true,
+  }) {
+    hideAllColumnGroup();
+
+    var found = refColumnGroups!.originalList.firstWhereOrNull(
+      (element) => element.key == columnKey,
+    );
+
+    if (found == null) {
+      return;
+    }
+
+    found.hide = false;
 
     refColumns!.update();
     refColumnGroups!.update();

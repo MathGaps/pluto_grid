@@ -7,11 +7,13 @@ class PlutoColumnGroup with IterableMixin<PlutoColumn> {
   PlutoColumnGroup({
     required this.title,
     required this.columns,
+    this.canHide = true,
   })  : _hide = false,
         _key = UniqueKey();
 
   final Widget title;
   final List<PlutoColumn> columns;
+  final bool? canHide;
 
   /// Column key
   final Key _key;
