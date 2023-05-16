@@ -42,8 +42,7 @@ class PlutoScrollbar extends StatefulWidget {
     required this.child,
   })  : assert(thickness < double.infinity),
         assert(thicknessWhileDragging < double.infinity),
-        assert(!isAlwaysShown ||
-            (horizontalController != null || verticalController != null)),
+        assert(!isAlwaysShown || (horizontalController != null || verticalController != null)),
         super(key: key);
 
   static const double defaultThickness = 3;
@@ -76,8 +75,7 @@ class PlutoScrollbar extends StatefulWidget {
   _CupertinoScrollbarState createState() => _CupertinoScrollbarState();
 }
 
-class _CupertinoScrollbarState extends State<PlutoScrollbar>
-    with TickerProviderStateMixin {
+class _CupertinoScrollbarState extends State<PlutoScrollbar> with TickerProviderStateMixin {
   final GlobalKey _customPaintKey = GlobalKey();
   ScrollbarPainter? _painter;
 
@@ -90,13 +88,12 @@ class _CupertinoScrollbarState extends State<PlutoScrollbar>
 
   double get _thickness {
     return widget.thickness +
-        _thicknessAnimationController.value *
-            (widget.thicknessWhileDragging - widget.thickness);
+        _thicknessAnimationController.value * (widget.thicknessWhileDragging - widget.thickness);
   }
 
   Radius? get _radius {
-    return Radius.lerp(widget.radius, widget.radiusWhileDragging,
-        _thicknessAnimationController.value);
+    return Radius.lerp(
+        widget.radius, widget.radiusWhileDragging, _thicknessAnimationController.value);
   }
 
   ScrollController? _currentController;
@@ -108,9 +105,7 @@ class _CupertinoScrollbarState extends State<PlutoScrollbar>
           PrimaryScrollController.of(context);
     }
 
-    return _currentAxis == Axis.vertical
-        ? widget.verticalController
-        : widget.horizontalController;
+    return _currentAxis == Axis.vertical ? widget.verticalController : widget.horizontalController;
   }
 
   Axis? _currentAxis;
@@ -202,8 +197,7 @@ class _CupertinoScrollbarState extends State<PlutoScrollbar>
     // time _dragScrollbar was called, into the coordinate space of the scroll
     // position, and create/update the drag event with that position.
     final double scrollOffsetLocal = _painter!.getTrackToScroll(primaryDelta);
-    final double scrollOffsetGlobal =
-        scrollOffsetLocal + _currentController!.position.pixels;
+    final double scrollOffsetGlobal = scrollOffsetLocal + _currentController!.position.pixels;
     final Axis direction = _currentController!.position.axis;
 
     if (_drag == null) {
@@ -348,8 +342,7 @@ class _CupertinoScrollbarState extends State<PlutoScrollbar>
 
     _currentAxis = axisDirectionToAxis(metrics.axisDirection);
 
-    if (notification is ScrollUpdateNotification ||
-        notification is OverscrollNotification) {
+    if (notification is ScrollUpdateNotification || notification is OverscrollNotification) {
       // Any movements always makes the scrollbar start showing up.
       if (_fadeoutAnimationController.status != AnimationStatus.forward) {
         _fadeoutAnimationController.forward();
@@ -369,8 +362,7 @@ class _CupertinoScrollbarState extends State<PlutoScrollbar>
   // Get the GestureRecognizerFactories used to detect gestures on the scrollbar
   // thumb.
   Map<Type, GestureRecognizerFactory> get _gestures {
-    final Map<Type, GestureRecognizerFactory> gestures =
-        <Type, GestureRecognizerFactory>{};
+    final Map<Type, GestureRecognizerFactory> gestures = <Type, GestureRecognizerFactory>{};
 
     gestures[_ThumbPressGestureRecognizer] =
         GestureRecognizerFactoryWithHandlers<_ThumbPressGestureRecognizer>(
@@ -423,14 +415,12 @@ class _CupertinoScrollbarState extends State<PlutoScrollbar>
 class _ThumbPressGestureRecognizer extends LongPressGestureRecognizer {
   _ThumbPressGestureRecognizer({
     double? postAcceptSlopTolerance,
-    PointerDeviceKind? kind,
     required Object debugOwner,
     required GlobalKey customPaintKey,
     this.onlyDraggingThumb = false,
   })  : _customPaintKey = customPaintKey,
         super(
           postAcceptSlopTolerance: postAcceptSlopTolerance,
-          kind: kind,
           debugOwner: debugOwner,
           duration: const Duration(milliseconds: 100),
         );
@@ -440,8 +430,7 @@ class _ThumbPressGestureRecognizer extends LongPressGestureRecognizer {
 
   @override
   bool isPointerAllowed(PointerDownEvent event) {
-    if (!_hitTestInteractive(
-        _customPaintKey, event.position, event.kind, onlyDraggingThumb)) {
+    if (!_hitTestInteractive(_customPaintKey, event.position, event.kind, onlyDraggingThumb)) {
       return false;
     }
     return super.isPointerAllowed(event);
@@ -451,15 +440,13 @@ class _ThumbPressGestureRecognizer extends LongPressGestureRecognizer {
 // foregroundPainter also hit tests its children by default, but the
 // scrollbar should only respond to a gesture directly on its thumb, so
 // manually check for a hit on the thumb here.
-bool _hitTestInteractive(GlobalKey customPaintKey, Offset offset,
-    PointerDeviceKind kind, bool onlyDraggingThumb) {
+bool _hitTestInteractive(
+    GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind, bool onlyDraggingThumb) {
   if (customPaintKey.currentContext == null) {
     return false;
   }
-  final CustomPaint customPaint =
-      customPaintKey.currentContext!.widget as CustomPaint;
-  final ScrollbarPainter painter =
-      customPaint.foregroundPainter! as ScrollbarPainter;
+  final CustomPaint customPaint = customPaintKey.currentContext!.widget as CustomPaint;
+  final ScrollbarPainter painter = customPaint.foregroundPainter! as ScrollbarPainter;
   final Offset localOffset = _getLocalOffset(customPaintKey, offset);
   // We can only receive track taps that are on the thumb.
   return onlyDraggingThumb
@@ -468,7 +455,6 @@ bool _hitTestInteractive(GlobalKey customPaintKey, Offset offset,
 }
 
 Offset _getLocalOffset(GlobalKey scrollbarPainterKey, Offset position) {
-  final RenderBox renderBox =
-      scrollbarPainterKey.currentContext!.findRenderObject()! as RenderBox;
+  final RenderBox renderBox = scrollbarPainterKey.currentContext!.findRenderObject()! as RenderBox;
   return renderBox.globalToLocal(position);
 }
