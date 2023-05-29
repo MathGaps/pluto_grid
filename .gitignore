@@ -92,3 +92,5 @@ coverage/
 
 # Symbols
 app.*.symbols
+
+.fvm
