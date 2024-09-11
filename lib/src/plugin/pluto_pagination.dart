@@ -10,8 +10,7 @@ class PlutoPagination extends PlutoStatefulWidget {
   _PlutoPaginationState createState() => _PlutoPaginationState();
 }
 
-abstract class _PlutoPaginationStateWithChange
-    extends PlutoStateWithChange<PlutoPagination> {
+abstract class _PlutoPaginationStateWithChange extends PlutoStateWithChange<PlutoPagination> {
   int page = 1;
 
   int totalPage = 1;
@@ -101,16 +100,16 @@ class _PlutoPaginationState extends _PlutoPaginationStateWithChange {
   }
 
   final _iconButtonStyle = ElevatedButton.styleFrom(
-    primary: Colors.transparent,
-    onPrimary: Colors.transparent,
-    onSurface: Colors.transparent,
+    backgroundColor: Colors.transparent,
+    foregroundColor: Colors.transparent,
+    disabledForegroundColor: Colors.transparent,
     shadowColor: Colors.transparent,
   );
 
   ButtonStyle _getNumberButtonStyle(bool isCurrentIndex) {
     return TextButton.styleFrom(
-      primary: Colors.transparent,
-      onSurface: Colors.transparent,
+      foregroundColor: Colors.transparent,
+      disabledForegroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 10),
       backgroundColor: Colors.transparent,
@@ -119,8 +118,7 @@ class _PlutoPaginationState extends _PlutoPaginationStateWithChange {
 
   TextStyle _getNumberTextStyle(bool isCurrentIndex) {
     return TextStyle(
-      fontSize:
-          isCurrentIndex ? widget.stateManager.configuration!.iconSize : null,
+      fontSize: isCurrentIndex ? widget.stateManager.configuration!.iconSize : null,
       color: isCurrentIndex
           ? widget.stateManager.configuration!.activatedBorderColor
           : widget.stateManager.configuration!.iconColor,
