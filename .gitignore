@@ -94,3 +94,4 @@ coverage/
 app.*.symbols
 
 .fvm
+.fvmrc
